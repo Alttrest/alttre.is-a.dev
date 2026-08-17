@@ -12,6 +12,7 @@ const DEFAULT_PROJECTS = [
         icon: "📱",
         image: "assets/nexusai_phone.png",
         github: "https://github.com/Alttrest/NexusAI-PhoneAgent",
+        devpost: "https://devpost.com/software/nexusai-phoneagent",
         live: null
     },
     {
@@ -26,6 +27,7 @@ const DEFAULT_PROJECTS = [
         icon: "🤖",
         image: "assets/ai_post_ecosystem.png",
         github: "https://github.com/Alttrest/AI-POST",
+        devpost: "https://devpost.com/software/ai-post-ecosystem",
         live: null
     },
     {
@@ -82,6 +84,7 @@ const DEFAULT_PROJECTS = [
         icon: "⚙️",
         image: "assets/sumo_robot.png",
         github: "https://github.com/Alttrest",
+        devpost: "https://devpost.com/Alttrest",
         live: null
     },
     {
@@ -654,9 +657,20 @@ function openProjectDetails(project) {
     // Deconflict modal overlays
     closeSkillsPanel();
     closeSetupPanel();
+    closeBlogPanel();
+    closeBlogPost();
     
     const liveLinkMarkup = project.live 
         ? `<a href="${project.live}" target="_blank" class="modal-link-btn">Live Project &nearr;</a>`
+        : "";
+
+    const devpostLinkMarkup = project.devpost
+        ? `<button type="button" class="modal-link-btn devpost-link" onclick="openBlogWithFilter('hackathons')">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:4px;">
+                <path d="M6.002 1.61L0 12.004l6.002 10.388h7.062l5.882-10.388L13.064 1.61H6.002zm2.936 3.655h2.805c3.08 0 5.485 2.146 5.485 6.739 0 4.593-2.405 6.739-5.485 6.739H8.938V5.265zm2.805 10.518c1.69 0 2.664-1.287 2.664-3.779 0-2.492-.974-3.779-2.664-3.779h-0.785v7.558h0.785z"/>
+            </svg>
+            Hackathon Dev Log &rarr;
+           </button>`
         : "";
     
     const heroVisualContent = project.image
@@ -677,6 +691,7 @@ function openProjectDetails(project) {
                 </div>
                 <div class="modal-links">
                     ${liveLinkMarkup}
+                    ${devpostLinkMarkup}
                     <a href="${project.github}" target="_blank" class="modal-link-btn secondary-link">GitHub Source &nearr;</a>
                 </div>
             </div>
@@ -735,22 +750,26 @@ function handleModalParallax(e) {
 }
 
 
-// ================= INFO SUB-PANELS (SKILLS, SETUP, ADMIN, CONTACT) ================= //
+// ================= INFO SUB-PANELS (SKILLS, SETUP, BLOG, ADMIN, CONTACT) ================= //
 const skillsPanel = document.getElementById("skillsPanel");
 const setupPanel = document.getElementById("setupPanel");
+const blogPanel = document.getElementById("blogPanel");
 const adminPanel = document.getElementById("adminPanel");
 const contactPanel = document.getElementById("contactPanel");
 
 const navSkillsBtn = document.getElementById("navSkillsBtn");
 const navSetupBtn = document.getElementById("navSetupBtn");
+const navBlogBtn = document.getElementById("navBlogBtn");
 const navProjectsBtn = document.getElementById("navProjectsBtn");
 const navContactBtn = document.getElementById("navContactBtn");
 const navHomeBtn = document.getElementById("navHomeBtn");
 
 const skillsCloseBtn = document.getElementById("skillsCloseBtn");
 const setupCloseBtn = document.getElementById("setupCloseBtn");
+const blogCloseBtn = document.getElementById("blogCloseBtn");
 const skillsOverlay = document.getElementById("skillsOverlay");
 const setupOverlay = document.getElementById("setupOverlay");
+const blogOverlay = document.getElementById("blogOverlay");
 
 const adminCloseBtn = document.getElementById("adminCloseBtn");
 const adminOverlay = document.getElementById("adminOverlay");
@@ -768,6 +787,8 @@ if (navHomeBtn) {
 function goBackToIntro() {
     closeSkillsPanel();
     closeSetupPanel();
+    closeBlogPanel();
+    closeBlogPost();
     closeAdminPanel();
     closeContactPanel();
     closeProjectDetails();
@@ -792,6 +813,8 @@ function goBackToIntro() {
 // Skills Panel Actions
 navSkillsBtn.addEventListener("click", () => {
     closeSetupPanel(); // Close setup first
+    closeBlogPanel();  // Close blog
+    closeBlogPost();
     closeAdminPanel(); // Close admin panel
     closeContactPanel(); // Close contact panel
     closeProjectDetails();
@@ -818,7 +841,9 @@ function closeSkillsPanel() {
 // Setup Panel Actions
 navSetupBtn.addEventListener("click", () => {
     closeSkillsPanel(); // Close skills first
-    closeAdminPanel(); // Close admin panel
+    closeBlogPanel();   // Close blog
+    closeBlogPost();
+    closeAdminPanel();  // Close admin panel
     closeContactPanel(); // Close contact panel
     closeProjectDetails();
     stopSkillsGraph();
@@ -835,11 +860,41 @@ function closeSetupPanel() {
     resetActiveNav();
 }
 
+// Blog Panel Actions
+if (navBlogBtn) {
+    navBlogBtn.addEventListener("click", () => {
+        closeSkillsPanel();
+        closeSetupPanel();
+        closeAdminPanel();
+        closeContactPanel();
+        closeProjectDetails();
+        closeBlogPost();
+        stopSkillsGraph();
+        
+        if (blogPanel) blogPanel.classList.add("active");
+        setActiveNav(navBlogBtn);
+        renderBlogPosts();
+    });
+}
+
+if (blogCloseBtn) blogCloseBtn.addEventListener("click", closeBlogPanel);
+if (blogOverlay) blogOverlay.addEventListener("click", closeBlogPanel);
+
+function closeBlogPanel() {
+    closeBlogPost();
+    if (blogPanel) {
+        blogPanel.classList.remove("active");
+    }
+    resetActiveNav();
+}
+
 // Contact Panel Actions
 if (navContactBtn) {
     navContactBtn.addEventListener("click", () => {
         closeSkillsPanel();
         closeSetupPanel();
+        closeBlogPanel();
+        closeBlogPost();
         closeAdminPanel();
         closeProjectDetails();
         stopSkillsGraph();
@@ -873,6 +928,8 @@ function closeAdminPanel() {
 navProjectsBtn.addEventListener("click", () => {
     closeSkillsPanel();
     closeSetupPanel();
+    closeBlogPanel();
+    closeBlogPost();
     closeAdminPanel();
     closeContactPanel();
     stopSkillsGraph();
@@ -888,12 +945,14 @@ function setActiveNav(activeBtn) {
 }
 
 function resetActiveNav() {
-    const isSkillsActive = skillsPanel && skillsPanel.classList.contains("active");
-    const isSetupActive = setupPanel && setupPanel.classList.contains("active");
-    const isAdminActive = adminPanel && adminPanel.classList.contains("active");
-    const isContactActive = contactPanel && contactPanel.classList.contains("active");
-    
-    if (!isSkillsActive && !isSetupActive && !isAdminActive && !isContactActive) {
+    const isAnyPanelActive = 
+        (skillsPanel && skillsPanel.classList.contains("active")) ||
+        (setupPanel && setupPanel.classList.contains("active")) ||
+        (blogPanel && blogPanel.classList.contains("active")) ||
+        (contactPanel && contactPanel.classList.contains("active")) ||
+        (adminPanel && adminPanel.classList.contains("active"));
+
+    if (!isAnyPanelActive) {
         setActiveNav(navProjectsBtn);
     }
 }
@@ -1639,6 +1698,8 @@ if (adminAddProjectForm) {
         const techs = techInput.split(",").map(t => t.trim()).filter(Boolean);
         const icon = document.getElementById("projIcon").value.trim() || "📁";
         const github = document.getElementById("projGithub").value.trim() || "https://github.com/Alttrest";
+        const devpostInput = document.getElementById("projDevpost");
+        const devpost = devpostInput ? devpostInput.value.trim() || null : null;
         const live = document.getElementById("projLive").value.trim() || null;
         
         const gradSelect = projGradientSelect.value;
@@ -1661,6 +1722,7 @@ if (adminAddProjectForm) {
             icon,
             image: currentUploadedImageBase64,
             github,
+            devpost,
             live
         };
         
@@ -1835,4 +1897,468 @@ if (document.readyState === "loading") {
     window.addEventListener("DOMContentLoaded", initAutogrowTextareas);
 } else {
     initAutogrowTextareas();
+}
+
+
+// ================= BLOG / DEV LOGS SYSTEM ================= //
+const DEFAULT_BLOG_POSTS = [
+    {
+        id: "devpost-hackathon-ai-prototype",
+        title: "36 Saatte Çalışan AI Ajanı Prototipi Geliştirmek",
+        category: "hackathons",
+        categoryLabel: "Devpost & Hackathons",
+        date: "2026-07-22",
+        readTime: "8 min read",
+        excerpt: "Hackathon ortamında sıfırdan bir AI agent prototipi çıkarmak: Planlama, hızlı iterasyon, uyku yönetimi ve son dakika debug hikayeleri.",
+        tags: ["Hackathon", "AI Agent", "Devpost", "Sprint"],
+        content: `
+            <h2>Hackathon'da AI Agent Geliştirmenin Gerçekliği</h2>
+            <p>Hackathon'lar, geliştirici olarak en çok büyüdüğüm anlar. 36 saat boyunca sadece kod, kahve ve ekip arkadaşlarınla kendi kendine çalışan bir AI ajanı üretmek — bu yazıda tam da bunu anlattım.</p>
+            
+            <div class="blog-article-callout">
+                "İlk 6 saatte plan yaptık, sonraki 20 saatte kod yazdık, son 10 saatte debug ettik ve demo hazırladık."
+            </div>
+            
+            <h2>Proje Planlaması: İlk 6 Saat</h2>
+            <p>Takım olarak ilk iş mimari kararları aldık. Hangi LLM API'yi kullanacağımız, ajanın karar ağacı yapısı, ve kullanıcı arayüzünün minimalist olması gerektiği konularında hızla anlaştık.</p>
+
+            <h3>Teknoloji Seçimleri</h3>
+            <ul>
+                <li><strong>Backend:</strong> Python + Flask — hızlı prototipleme için ideal</li>
+                <li><strong>AI Engine:</strong> Gemini API — ücretsiz tier ile hackathon'a uygun</li>
+                <li><strong>Frontend:</strong> Vanilla JS + minimal CSS — framework overhead'i sıfır</li>
+            </ul>
+
+            <h2>Geliştirme Süreci: 20 Saat Non-Stop</h2>
+            <p>ReAct (Reasoning and Acting) pattern'ini implement ettik. Ajan, kullanıcıdan gelen bir komut üzerine önce "düşünme" fazına giriyor, ardından aksiyonu planlıyor ve çalıştırıyordu.</p>
+            
+            <pre><code>// Basitleştirilmiş ReAct döngüsü
+async function agentLoop(userQuery) {
+    let context = { query: userQuery, history: [] };
+    
+    while (!context.completed) {
+        const thought = await llm.reason(context);
+        const action = await llm.planAction(thought);
+        const result = await executeAction(action);
+        
+        context.history.push({ thought, action, result });
+        context.completed = result.final;
+    }
+    
+    return context.history;
+}</code></pre>
+
+            <h2>Demo ve Sunum</h2>
+            <p>Son 4 saatte demo senaryosunu hazırladık. Jüri önünde ajanımız canlı olarak bir web araştırması yaptı, sonuçları özetledi ve kullanıcıya raporladı. Alkış aldık — proje Devpost'ta hackathon portföyüme eklendi.</p>
+
+            <h3>Çıkardığım Dersler</h3>
+            <p>Hackathon'larda öğrendiğim en önemli şey: <strong>MVP'yi hızlı çıkar, sonra iterasyon yap</strong>. Mükemmeliyetçilik düşman, çalışan bir demo her şeyden değerli.</p>
+        `
+    },
+    {
+        id: "nexusai-phone-mobile-llm",
+        title: "NexusAI-PhoneAgent: Mobil Cihazlarda Otonom LLM Ajanları",
+        category: "ai",
+        categoryLabel: "AI & Agents",
+        date: "2026-06-15",
+        readTime: "10 min read",
+        excerpt: "React Native ile sıfırdan otonom mobil AI ajanı geliştirmek: Mimari kararlar, LLM entegrasyonu ve cihaz üzerinde işletim sistemi etkileşimi.",
+        tags: ["React Native", "LLM", "Mobile AI", "Expo"],
+        content: `
+            <h2>Neden Mobil AI Agent?</h2>
+            <p>Masaüstü AI asistanları artık yaygın. Peki ya cebindeki cihaz seni anlasa ve senin adına aksiyon alsa? NexusAI-PhoneAgent tam olarak bunu hedefliyor.</p>
+
+            <h2>Mimari Tasarım</h2>
+            <p>Proje React Native + Expo ile geliştirildi. Arka planda bir LLM servisiyle JSON-RPC üzerinden haberleşen agent katmanı var. Kullanıcıdan gelen doğal dil komutları, önce intent parsing'den geçiyor, ardından cihaz API'lerine çevriliyor.</p>
+            
+            <pre><code>// Intent parsing pipeline
+const pipeline = [
+    tokenize,        // Doğal dili tokenize et
+    classifyIntent,  // "fotoğraf çek" → CAMERA_CAPTURE
+    mapToAction,     // Intent → Native module çağrısı
+    executeNative    // Cihazda çalıştır
+];</code></pre>
+
+            <div class="blog-article-callout">
+                "Telefon sadece bir ekran değil — sensörleri, kamerası ve bağlantılarıyla tam bir otonom agent platformu."
+            </div>
+
+            <h2>LLM Entegrasyonu</h2>
+            <p>Cihaz üzerinde hafif bir model çalıştırmak yerine, cloud-based LLM API'ler kullandık. Bunun nedeni hem model kalitesi hem de cihaz batarya yönetimi. Her API çağrısı öncesinde context window'u optimize eden bir summarization katmanı ekledik.</p>
+
+            <h3>Zorluklar ve Çözümler</h3>
+            <p><strong>Latency:</strong> Mobilde her milisaniye önemli. Streaming response kullanarak ilk token'ı kullanıcıya mümkün olan en kısa sürede göstermeyi başardık.</p>
+            <p><strong>Background Processing:</strong> Expo'nun background task API'leri ile uzun süreli işlemleri arka planda yönetiyoruz.</p>
+            
+            <h2>Gelecek Planlar</h2>
+            <p>Projenin bir sonraki adımı: on-device LLM inference ile tam offline çalışma kapasitesi. Bu sayede internet bağlantısı olmadan da temel agent komutları çalışacak.</p>
+        `
+    },
+    {
+        id: "fibonacci-sumo-robot",
+        title: "Fibonacci Robot Kupası: Sensör Füzyonu ve Hızlı Karar Motoru",
+        category: "robotics",
+        categoryLabel: "Robotics",
+        date: "2026-05-08",
+        readTime: "7 min read",
+        excerpt: "Otonom mini sumo robotunda jüri özel ödülü kazanmak: Sensör füzyonu, motor kontrol algoritmaları ve turnuva stratejileri.",
+        tags: ["Arduino", "C++", "Sensor Fusion", "Robotics"],
+        content: `
+            <h2>Fibonacci Robot Kupası 🏆</h2>
+            <p>Fibonacci Robotics turnuvasında jüri özel ödülünü kazanan mini sumo robotumuzun arkasındaki mühendislik. Bu proje, yazılım ve donanımın birleştiği noktada otonom karar verme üzerine kurulu.</p>
+
+            <h2>Donanım Tasarımı</h2>
+            <p>Robot şasisini 3D printer ile ürettik. Motor olarak 1000RPM DC motorlar, güç kaynağı olarak 2S Li-Po batarya kullandık. Ağırlık limiti olan 500g sınırı içinde kalmak için her bileşen gram gram optimize edildi.</p>
+
+            <h3>Sensör Dizilimi</h3>
+            <ul>
+                <li><strong>4x QTR Çizgi Sensörü:</strong> Ring kenarını algılama</li>
+                <li><strong>3x Sharp Mesafe Sensörü:</strong> Rakip tespiti (ön, sol, sağ)</li>
+                <li><strong>1x IMU (MPU6050):</strong> Yönelim ve ivme bilgisi</li>
+            </ul>
+
+            <h2>Sensör Füzyonu Algoritması</h2>
+            <p>Robotun beyni, saniyede yüzlerce kez tüm sensörleri okuyan ve birleştiren bir füzyon algoritması. Sadece mesafe sensörüne güvenmek yerine, IMU verisiyle birleşik bir "tehdit skoru" hesaplıyoruz.</p>
+            
+            <pre><code>// Sensör füzyonu ile taktik karar
+void fusionDecision() {
+    float frontDist = readSharp(FRONT);
+    float leftDist  = readSharp(LEFT);
+    float rightDist = readSharp(RIGHT);
+    float heading   = getIMUHeading();
+    
+    // Çizgi algılandıysa → acil geri manevra
+    if (isOnEdge()) { emergencyReverse(); return; }
+    
+    // Tehdit skoru hesapla
+    float threat = (1.0/frontDist)*0.6 + 
+                   (1.0/leftDist)*0.2 + 
+                   (1.0/rightDist)*0.2;
+    
+    if (threat > ATTACK_THRESHOLD) {
+        fullSpeedAttack(heading);
+    } else {
+        searchPattern(heading);
+    }
+}</code></pre>
+
+            <div class="blog-article-callout">
+                "Kazanan robot, en güçlü olan değil — en hızlı karar veren."
+            </div>
+
+            <h2>Turnuva Günü</h2>
+            <p>7 maçın 5'ini kazandık. Jüri özel ödülünü almamızın sebebi sadece performans değil, aynı zamanda robotun tamamen sıfırdan kodlanmış olması ve sensör füzyonu yaklaşımının eşsizliğiydi.</p>
+        `
+    },
+    {
+        id: "linux-hyprland-setup",
+        title: "Sıfırdan Linux Geliştirici Ortamı: Hyprland ve Klavye Odaklı Üretkenlik",
+        category: "linux",
+        categoryLabel: "Linux & Setup",
+        date: "2026-04-20",
+        readTime: "6 min read",
+        excerpt: "Custom Arch Linux + Hyprland WM kurulumu: Dotfile yönetimi, terminal workflow'u ve geliştirici araçları konfigürasyonu.",
+        tags: ["Linux", "Hyprland", "Wayland", "Dotfiles"],
+        content: `
+            <h2>Neden Tiling Window Manager?</h2>
+            <p>GNOME ve KDE güzel ama ağır. Bir geliştirici olarak ekranımda sadece terminal, editör ve tarayıcı var — bunları yönetmek için tam teşekküllü bir masaüstü ortamına ihtiyacım yok.</p>
+
+            <h2>Hyprland Kurulumu</h2>
+            <p>Wayland tabanlı, animasyonlu, GPU-hızlandırılmış bir tiling compositor. Arch Linux üzerine kurdum ve her detayı elle yapılandırdım.</p>
+
+            <h3>Temel Konfigürasyon</h3>
+            <pre><code># ~/.config/hypr/hyprland.conf
+monitor=,preferred,auto,1
+input {
+    kb_layout = tr
+    follow_mouse = 1
+    sensitivity = 0
+}
+general {
+    gaps_in = 5
+    gaps_out = 10
+    border_size = 2
+    col.active_border = rgba(DA291Cff) rgba(5E7060ff) 45deg
+    col.inactive_border = rgba(1E1B1855)
+    layout = dwindle
+}
+animations {
+    enabled = yes
+    bezier = smoothOut, 0.36, 0, 0.66, -0.56
+    animation = windows, 1, 4, smoothOut, slide
+}</code></pre>
+
+            <h2>Terminal Workflow</h2>
+            <p>Kitty terminal + Zsh + Starship prompt kullanıyorum. Tmux yerine Hyprland'ın kendi workspace yönetimini tercih ediyorum — her workspace bir proje, her pencere bir görev.</p>
+
+            <div class="blog-article-callout">
+                "Fareyi ne kadar az kullanırsanız, o kadar hızlı geliştirirsiniz."
+            </div>
+
+            <h2>Dotfile Yönetimi</h2>
+            <p>Tüm konfigürasyonlarım bir Git repo'sunda. Yeni bir makineye kurulum yaptığımda, tek bir <code>stow</code> komutuyla tüm dotfile'lar yerlerine oturuyor. Reproducible development environment'ın gücü bu.</p>
+        `
+    },
+    {
+        id: "from-scratch-web-philosophy",
+        title: "Modern Web'de 'From-Scratch' Felsefesi: Ağır Kütüphaneler Olmadan",
+        category: "web",
+        categoryLabel: "Web & Architecture",
+        date: "2026-03-10",
+        readTime: "9 min read",
+        excerpt: "3D efektler ve akıcı arayüzleri framework yığını olmadan inşa etmek: CSS transforms, vanilla JS event handling ve performans optimizasyonu.",
+        tags: ["JavaScript", "CSS3", "Performance", "From-Scratch"],
+        content: `
+            <h2>Framework'süz Geliştirmenin Avantajları</h2>
+            <p>React, Vue, Svelte — hepsi harika araçlar. Ama bir portföy sitesi veya landing page için 200KB+ JavaScript bundle göndermek mantıklı mı? Bence hayır.</p>
+
+            <h2>CSS 3D Transforms ile Kart Sistemi</h2>
+            <p>Bu portföyde gördüğünüz 3D kart deck sistemi, sıfırdan CSS transforms ve wheel event handling ile yapıldı. Herhangi bir animasyon kütüphanesi kullanılmadı.</p>
+
+            <pre><code>// 3D kart stack efekti — saf matematik
+function updateDeckLayout() {
+    const cards = document.querySelectorAll('.project-card');
+    
+    cards.forEach((card, index) => {
+        const offset = index - activeIndex;
+        const absOffset = Math.abs(offset);
+        
+        // Her kart biraz arkaya ve yukarı kayar
+        const translateZ = -absOffset * 60;
+        const translateY = -absOffset * 15;
+        const scale = 1 - absOffset * 0.08;
+        const opacity = 1 - absOffset * 0.3;
+        
+        card.style.transform = 
+            \`translateZ(\${translateZ}px) 
+             translateY(\${translateY}px) 
+             scale(\${scale})\`;
+        card.style.opacity = Math.max(opacity, 0);
+    });
+}</code></pre>
+
+            <h2>Performans Farkı</h2>
+            <p>Bu sitenin toplam JavaScript boyutu ~70KB. Karşılaştırma olarak, benzer bir React uygulaması minimum 150-300KB olurdu. Lighthouse skoru: 98/100 Performance.</p>
+
+            <div class="blog-article-callout">
+                "En hızlı kod, hiç gönderilmeyen koddur. En iyi dependency, hiç eklenmeyendir."
+            </div>
+
+            <h3>Custom Cursor Sistemi</h3>
+            <p>Sitedeki özel cursor efekti de vanilla JS ile yapıldı. İki katmanlı bir yapı var: dış halka (smoothed lerp ile takip eder) ve iç nokta (anında tepki verir). Bu basit fark, premium bir his yaratıyor.</p>
+
+            <h2>Ne Zaman Framework Kullanmalı?</h2>
+            <p>Eğer projenizde state management karmaşıksa, çok sayıda form ve veri akışı varsa, veya büyük bir ekiple çalışıyorsanız — framework kullanın. Ama bir showcase, blog, veya landing page için? Vanilla her zaman kazanır.</p>
+        `
+    }
+];
+
+let blogPosts = [...DEFAULT_BLOG_POSTS];
+let activeBlogCategory = "all";
+let blogSearchQuery = "";
+
+// Blog Search
+const blogSearchInput = document.getElementById("blogSearchInput");
+const blogSearchClear = document.getElementById("blogSearchClear");
+
+if (blogSearchInput) {
+    blogSearchInput.addEventListener("input", (e) => {
+        blogSearchQuery = e.target.value.toLowerCase().trim();
+        if (blogSearchClear) {
+            blogSearchClear.style.display = blogSearchQuery ? "block" : "none";
+        }
+        renderBlogPosts();
+    });
+}
+
+if (blogSearchClear) {
+    blogSearchClear.addEventListener("click", () => {
+        blogSearchQuery = "";
+        blogSearchInput.value = "";
+        blogSearchClear.style.display = "none";
+        renderBlogPosts();
+    });
+}
+
+// Blog Category Filters
+const blogCategoriesContainer = document.getElementById("blogCategories");
+if (blogCategoriesContainer) {
+    blogCategoriesContainer.addEventListener("click", (e) => {
+        if (!e.target.classList.contains("blog-cat-btn")) return;
+        
+        blogCategoriesContainer.querySelectorAll(".blog-cat-btn").forEach(btn => btn.classList.remove("active"));
+        e.target.classList.add("active");
+        
+        activeBlogCategory = e.target.dataset.category;
+        renderBlogPosts();
+    });
+}
+
+// Blog Posts Rendering
+function renderBlogPosts() {
+    const container = document.getElementById("blogPostsList");
+    if (!container) return;
+    
+    let filtered = blogPosts;
+    
+    // Category filter
+    if (activeBlogCategory !== "all") {
+        filtered = filtered.filter(p => p.category === activeBlogCategory);
+    }
+    
+    // Search filter
+    if (blogSearchQuery) {
+        filtered = filtered.filter(p => 
+            p.title.toLowerCase().includes(blogSearchQuery) ||
+            p.excerpt.toLowerCase().includes(blogSearchQuery) ||
+            p.tags.some(t => t.toLowerCase().includes(blogSearchQuery)) ||
+            p.categoryLabel.toLowerCase().includes(blogSearchQuery)
+        );
+    }
+    
+    if (filtered.length === 0) {
+        container.innerHTML = `
+            <div class="blog-empty-state">
+                <p>🔍 Aramanızla eşleşen yazı bulunamadı.</p>
+                <p style="font-size: 0.85rem; margin-top: 0.4rem;">No posts matching your search.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = filtered.map(post => `
+        <div class="blog-card" data-post-id="${post.id}" onclick="openBlogPost('${post.id}')">
+            <div class="blog-card-meta">
+                <span class="blog-card-category ${post.category}">${post.categoryLabel}</span>
+                <span class="blog-card-date">${formatBlogDate(post.date)}</span>
+                <span class="blog-card-readtime">· ${post.readTime}</span>
+            </div>
+            <div class="blog-card-title">${post.title}</div>
+            <div class="blog-card-excerpt">${post.excerpt}</div>
+            <div class="blog-card-footer">
+                <div class="blog-card-tags">
+                    ${post.tags.map(t => `<span class="blog-pill-tag">${t}</span>`).join("")}
+                </div>
+                <span class="blog-read-cta">Read →</span>
+            </div>
+        </div>
+    `).join("");
+    
+    setupCursorHovers();
+}
+
+function formatBlogDate(dateStr) {
+    const d = new Date(dateStr);
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+}
+
+// Blog Post Reader Modal
+const blogPostModal = document.getElementById("blogPostModal");
+const blogPostContent = document.getElementById("blogPostContent");
+const blogPostCloseBtn = document.getElementById("blogPostCloseBtn");
+const blogPostOverlay = document.getElementById("blogPostOverlay");
+
+function openBlogPost(postId) {
+    const post = blogPosts.find(p => p.id === postId);
+    if (!post || !blogPostModal || !blogPostContent) return;
+    
+    blogPostContent.innerHTML = `
+        <div class="blog-article-header">
+            <div class="blog-article-meta">
+                <span class="blog-card-category ${post.category}">${post.categoryLabel}</span>
+                <span class="blog-card-date">${formatBlogDate(post.date)}</span>
+                <span class="blog-card-readtime">· ${post.readTime}</span>
+            </div>
+            <h1 class="blog-article-title">${post.title}</h1>
+            <div class="blog-article-author">
+                <div class="blog-article-author-avatar">A</div>
+                <span>Ali Turan (Alttre)</span>
+            </div>
+        </div>
+        <div class="blog-article-body">
+            ${post.content}
+        </div>
+        <div class="blog-article-footer">
+            <button class="blog-back-btn" onclick="closeBlogPost()">← Back to Dev Logs</button>
+            <div class="blog-card-tags">
+                ${post.tags.map(t => `<span class="blog-pill-tag">${t}</span>`).join("")}
+            </div>
+        </div>
+    `;
+    
+    blogPostModal.classList.add("active");
+    setupCursorHovers();
+    
+    // Reading progress bar
+    const progressBar = document.getElementById("blogReadingProgress");
+    if (progressBar && blogPostContent) {
+        blogPostContent.scrollTop = 0;
+        progressBar.style.width = "0%";
+        blogPostContent.addEventListener("scroll", updateBlogReadingProgress);
+    }
+}
+
+function updateBlogReadingProgress() {
+    const progressBar = document.getElementById("blogReadingProgress");
+    if (!progressBar || !blogPostContent) return;
+    
+    const scrollTop = blogPostContent.scrollTop;
+    const scrollHeight = blogPostContent.scrollHeight - blogPostContent.clientHeight;
+    const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    progressBar.style.width = Math.min(progress, 100) + "%";
+}
+
+function closeBlogPost() {
+    if (blogPostModal) {
+        blogPostModal.classList.remove("active");
+    }
+    // Reset progress bar
+    const progressBar = document.getElementById("blogReadingProgress");
+    if (progressBar) progressBar.style.width = "0%";
+    if (blogPostContent) {
+        blogPostContent.removeEventListener("scroll", updateBlogReadingProgress);
+    }
+}
+
+if (blogPostCloseBtn) blogPostCloseBtn.addEventListener("click", closeBlogPost);
+if (blogPostOverlay) blogPostOverlay.addEventListener("click", closeBlogPost);
+
+// Internal navigation: filter blog posts by category (used by Devpost banner)
+function filterBlogCategory(category) {
+    activeBlogCategory = category;
+    
+    // Update category button active states
+    if (blogCategoriesContainer) {
+        blogCategoriesContainer.querySelectorAll(".blog-cat-btn").forEach(btn => {
+            btn.classList.toggle("active", btn.dataset.category === category);
+        });
+    }
+    
+    renderBlogPosts();
+}
+
+// Open Blog panel from another panel with a specific category pre-selected
+function openBlogWithFilter(category) {
+    closeContactPanel();
+    closeSkillsPanel();
+    closeSetupPanel();
+    closeAdminPanel();
+    closeProjectDetails();
+    closeBlogPost();
+    stopSkillsGraph();
+    
+    activeBlogCategory = category;
+    
+    if (blogPanel) blogPanel.classList.add("active");
+    setActiveNav(navBlogBtn);
+    
+    // Update category button active states
+    if (blogCategoriesContainer) {
+        blogCategoriesContainer.querySelectorAll(".blog-cat-btn").forEach(btn => {
+            btn.classList.toggle("active", btn.dataset.category === category);
+        });
+    }
+    
+    renderBlogPosts();
 }

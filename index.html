@@ -64,6 +64,7 @@
                     <button class="nav-btn active" id="navProjectsBtn">Projects</button>
                     <button class="nav-btn" id="navSkillsBtn">Skills</button>
                     <button class="nav-btn" id="navSetupBtn">About Me</button>
+                    <button class="nav-btn" id="navBlogBtn">Blog</button>
                     <button class="nav-contact-btn" id="navContactBtn">Contact</button>
                 </nav>
             </header>
@@ -270,6 +271,10 @@
                                 <input type="url" id="projGithub" placeholder="https://github.com/Alttrest/repo">
                             </div>
                             <div class="form-group">
+                                <label for="projDevpost">Devpost Link (İsteğe Bağlı)</label>
+                                <input type="url" id="projDevpost" placeholder="https://devpost.com/software/...">
+                            </div>
+                            <div class="form-group">
                                 <label for="projLive">Live Link (İsteğe Bağlı)</label>
                                 <input type="url" id="projLive" placeholder="https://...">
                             </div>
@@ -351,11 +356,22 @@
                         <h3>Social Accounts</h3>
                         <p class="setup-description" style="margin-top: 0; margin-bottom: 1.2rem;">Feel free to follow my work or contact me directly through these channels.</p>
                         <div class="social-links-grid">
-                            <a href="https://instagram.com" target="_blank" class="social-link-card instagram" id="socialInstagram">
-                                <div class="social-link-icon">📸</div>
+                            <div class="social-link-card devpost" id="socialDevpost" onclick="openBlogWithFilter('hackathons')" style="cursor:pointer;">
+                                <div class="social-link-icon devpost-svg-icon">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                                        <path d="M6.002 1.61L0 12.004l6.002 10.388h7.062l5.882-10.388L13.064 1.61H6.002zm2.936 3.655h2.805c3.08 0 5.485 2.146 5.485 6.739 0 4.593-2.405 6.739-5.485 6.739H8.938V5.265zm2.805 10.518c1.69 0 2.664-1.287 2.664-3.779 0-2.492-.974-3.779-2.664-3.779h-0.785v7.558h0.785z"/>
+                                    </svg>
+                                </div>
                                 <div class="social-link-details">
-                                    <span class="social-link-name">Instagram</span>
-                                    <span class="social-link-handle">@Alttre</span>
+                                    <span class="social-link-name">Devpost & Hackathons</span>
+                                    <span class="social-link-handle">View hackathon dev logs</span>
+                                </div>
+                            </div>
+                            <a href="https://github.com/Alttrest" target="_blank" class="social-link-card github" id="socialGithub">
+                                <div class="social-link-icon">🐙</div>
+                                <div class="social-link-details">
+                                    <span class="social-link-name">GitHub</span>
+                                    <span class="social-link-handle">@Alttrest</span>
                                 </div>
                             </a>
                             <a href="https://linkedin.com" target="_blank" class="social-link-card linkedin" id="socialLinkedin">
@@ -365,11 +381,11 @@
                                     <span class="social-link-handle">Ali Turan</span>
                                 </div>
                             </a>
-                            <a href="https://github.com/Alttrest" target="_blank" class="social-link-card github" id="socialGithub">
-                                <div class="social-link-icon">🐙</div>
+                            <a href="https://instagram.com" target="_blank" class="social-link-card instagram" id="socialInstagram">
+                                <div class="social-link-icon">📸</div>
                                 <div class="social-link-details">
-                                    <span class="social-link-name">GitHub</span>
-                                    <span class="social-link-handle">@Alttrest</span>
+                                    <span class="social-link-name">Instagram</span>
+                                    <span class="social-link-handle">@Alttre</span>
                                 </div>
                             </a>
                             <a href="mailto:ali-turan-@outlook.com" class="social-link-card email" id="socialEmail">
@@ -381,6 +397,93 @@
                             </a>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== BLOG PANEL ========== -->
+        <div id="blogPanel" class="info-panel-modal">
+            <div class="info-panel-overlay" id="blogOverlay"></div>
+            <div class="info-panel-content blog-panel-content">
+                <button class="info-panel-close-btn" id="blogCloseBtn">&times;</button>
+                <div class="panel-header">
+                    <div class="badge-tag">ENGINEERING LOGS</div>
+                    <h2>DEV LOGS & BLOG</h2>
+                    <p>Writings on autonomous AI agents, robotics, Linux dotfiles, hackathons, and systems built from scratch.</p>
+                </div>
+                
+                <!-- Search & Filters -->
+                <div class="blog-controls">
+                    <div class="blog-search-box">
+                        <span class="blog-search-icon">🔍</span>
+                        <input type="text" id="blogSearchInput" placeholder="Yazılarda ara / Search dev logs..." autocomplete="off">
+                        <button type="button" id="blogSearchClear" class="blog-search-clear" style="display:none;">&times;</button>
+                    </div>
+                    <div class="blog-categories" id="blogCategories">
+                        <button class="blog-cat-btn active" data-category="all">All</button>
+                        <button class="blog-cat-btn" data-category="ai">AI & Agents</button>
+                        <button class="blog-cat-btn" data-category="robotics">Robotics</button>
+                        <button class="blog-cat-btn" data-category="hackathons">Devpost & Hackathons</button>
+                        <button class="blog-cat-btn" data-category="linux">Linux & Setup</button>
+                        <button class="blog-cat-btn" data-category="web">Web & Architecture</button>
+                    </div>
+                </div>
+
+                <!-- Devpost & Hackathons Showcase Hub inside Blog -->
+                <div class="devpost-banner-card" onclick="filterBlogCategory('hackathons')" style="cursor:pointer;" title="Tıkla: Hackathon yazılarını filtrele">
+                    <div class="devpost-banner-header">
+                        <div class="devpost-banner-badge">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                <path d="M6.002 1.61L0 12.004l6.002 10.388h7.062l5.882-10.388L13.064 1.61H6.002zm2.936 3.655h2.805c3.08 0 5.485 2.146 5.485 6.739 0 4.593-2.405 6.739-5.485 6.739H8.938V5.265zm2.805 10.518c1.69 0 2.664-1.287 2.664-3.779 0-2.492-.974-3.779-2.664-3.779h-0.785v7.558h0.785z"/>
+                            </svg>
+                            <span>DEVPOST & HACKATHONS</span>
+                        </div>
+                        <span class="devpost-badge-counter">4 Hackathons · 1 Award 🏆</span>
+                    </div>
+                    <div class="devpost-banner-text">
+                        <h4>Hackathon Mühendislik Günlükleri</h4>
+                        <p>36-48 saatlik maratonlarda sıfırdan inşa ettiğimiz otonom yapay zeka ajanları, ödüllü robotik mimarileri ve donanım prototipleri.</p>
+                    </div>
+                    <div class="devpost-stats-grid">
+                        <div class="devpost-stat-item">
+                            <span class="stat-num">⚡ 36h</span>
+                            <span class="stat-lbl">Sprint Süresi</span>
+                        </div>
+                        <div class="devpost-stat-item">
+                            <span class="stat-num">🏆 Özel Ödül</span>
+                            <span class="stat-lbl">Fibonacci Robot Kupası</span>
+                        </div>
+                        <div class="devpost-stat-item">
+                            <span class="stat-num">🧠 ReAct AI</span>
+                            <span class="stat-lbl">Otonom Ajanlar</span>
+                        </div>
+                    </div>
+                    <div class="devpost-banner-footer">
+                        <span class="devpost-banner-link">
+                            Hackathon Yazılarını Filtrele &rarr;
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Blog Posts List -->
+                <div class="blog-posts-list" id="blogPostsList">
+                    <!-- Populated dynamically via app.js -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== BLOG POST DETAIL READER MODAL ========== -->
+        <div id="blogPostModal" class="details-modal blog-reader-modal">
+            <div class="modal-overlay" id="blogPostOverlay"></div>
+            <div class="modal-content-wrapper blog-reader-wrapper">
+                <div class="blog-reader-progress-bar" id="blogReadingProgress"></div>
+                <button class="modal-close-btn" id="blogPostCloseBtn">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/>
+                    </svg>
+                </button>
+                <div class="blog-reader-body" id="blogPostContent">
+                    <!-- Dynamic post content rendered here -->
                 </div>
             </div>
         </div>
