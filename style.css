@@ -1223,10 +1223,55 @@ button, a {
     margin-bottom: 0.2rem;
 }
 
-/* Responsive details */
+/* ================= HAMBURGER MENU ================= */
+.hamburger-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    background: rgba(243, 236, 224, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-medium);
+    border-radius: 8px;
+    padding: 8px;
+    cursor: pointer;
+    z-index: 60;
+    transition: var(--transition-fast);
+}
+
+.hamburger-btn:hover {
+    background-color: var(--bg-cream-tertiary);
+}
+
+.hamburger-bar {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background-color: var(--text-primary);
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.hamburger-btn.active .hamburger-bar:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-btn.active .hamburger-bar:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-btn.active .hamburger-bar:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* ================= RESPONSIVE: TABLET (max-width: 1024px) ================= */
 @media (max-width: 1024px) {
     .portfolio-header {
-        padding: 2rem;
+        padding: 1.5rem 2rem;
     }
     
     .portfolio-content {
@@ -1236,133 +1281,460 @@ button, a {
     .section-title {
         font-size: 2.8rem;
     }
-}
-
-@media (max-width: 768px) {
-    .portfolio-header {
-        flex-direction: column;
-        gap: 1.5rem;
-        padding: 1.5rem;
-    }
     
     .portfolio-nav {
-        width: 100%;
+        flex-wrap: wrap;
         justify-content: center;
-    }
-    
-    .section-title {
-        font-size: 2.2rem;
-    }
-    
-    .deck-outer-container {
-        height: 350px;
-    }
-    
-    .deck-container {
-        width: 260px;
-        height: 300px;
-    }
-    
-    .project-card {
-        width: 260px;
-        height: 300px;
-    }
-    
-    .card-visual {
-        height: 130px;
-    }
-    
-    .modal-body {
-        padding: 2rem 1.5rem;
-    }
-    
-    .modal-title {
-        font-size: 1.8rem;
-    }
-    
-    .info-panel-content {
-        padding: 3rem 1.5rem;
+        max-width: 95%;
+        gap: 0.6rem;
     }
 }
 
-/* Mobile Devices Optimization (max-width: 480px) */
-@media (max-width: 480px) {
-    .typewriter-container {
-        font-size: 1.25rem;
-        min-height: 250px;
+/* ================= RESPONSIVE: MOBILE (max-width: 768px) ================= */
+@media (max-width: 768px) {
+    /* --- Hamburger visible --- */
+    .hamburger-btn {
+        display: flex;
     }
-    
+
+    /* --- Header --- */
+    .portfolio-header {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.2rem;
+        gap: 0;
+    }
+
+    /* --- Nav dropdown --- */
+    .portfolio-nav {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        padding: 0.8rem;
+        border-radius: 12px;
+        gap: 0.4rem;
+        margin-top: 0.8rem;
+        order: 3;
+    }
+
+    .portfolio-nav.mobile-open {
+        display: flex;
+        animation: nav-slide-in 0.3s ease;
+    }
+
+    @keyframes nav-slide-in {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .nav-btn {
+        width: 100%;
+        text-align: center;
+        padding: 0.65rem 1rem;
+        font-size: 0.95rem;
+        border-radius: 8px;
+    }
+
+    .nav-contact-btn {
+        width: 100%;
+        text-align: center;
+        padding: 0.65rem 1rem;
+        font-size: 0.95rem;
+        border-radius: 8px;
+    }
+
+    /* --- Intro Section --- */
+    .intro-section {
+        padding: 1.5rem;
+    }
+
+    .intro-content {
+        gap: 2rem;
+    }
+
+    .typewriter-container {
+        font-size: 1.15rem;
+        min-height: 280px;
+        line-height: 1.5;
+    }
+
+    .typewriter-prompt {
+        margin-right: 0.5rem;
+    }
+
     .explore-btn {
         padding: 1rem 2rem;
         font-size: 1rem;
         width: 100%;
         justify-content: center;
     }
-    
-    .brand-name {
-        font-size: 0.95rem;
-    }
-    
-    .brand-tag {
+
+    .intro-bg-badge {
         font-size: 0.75rem;
+        right: 1.5rem;
+        bottom: 1.5rem;
     }
-    
-    .portfolio-nav {
-        gap: 0.4rem;
-        padding: 0.3rem;
+
+    .intro-scroll-prompt {
+        bottom: 2.5rem;
     }
-    
-    .nav-btn {
-        padding: 0.4rem 0.6rem;
-        font-size: 0.75rem;
+
+    /* --- Portfolio Content --- */
+    .portfolio-content {
+        padding: 0 1rem 1.5rem 1rem;
     }
-    
-    .nav-contact-btn {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.75rem;
+
+    .section-title-area {
+        padding: 0 0.5rem;
     }
-    
+
+    .section-subtitle {
+        font-size: 0.7rem;
+    }
+
     .section-title {
-        font-size: 1.8rem;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
     }
-    
+
     .section-desc {
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         line-height: 1.4;
     }
-    
+
+    /* --- Card Deck Carousel --- */
     .deck-outer-container {
-        height: 320px;
+        height: 340px;
     }
-    
+
     .deck-container {
-        width: 230px;
-        height: 270px;
+        width: 270px;
+        height: 310px;
     }
-    
+
     .project-card {
-        width: 230px;
-        height: 270px;
+        width: 270px;
+        height: 310px;
     }
-    
+
     .card-visual {
-        height: 110px;
+        height: 135px;
     }
-    
+
+    .card-details {
+        padding: 1.2rem;
+    }
+
     .card-title {
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
-    
+
     .card-intro-desc {
-        font-size: 0.8rem;
+        font-size: 0.82rem;
     }
-    
+
+    /* --- Project Details Modal --- */
+    .modal-content-wrapper {
+        width: 95%;
+        height: 90vh;
+        border-radius: 12px;
+    }
+
+    .modal-hero {
+        height: 200px;
+    }
+
+    .modal-body {
+        padding: 1.5rem 1.2rem;
+    }
+
+    .modal-title {
+        font-size: 1.6rem;
+    }
+
+    .modal-meta-row {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .modal-links {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .modal-link-btn {
+        flex: 1;
+        min-width: 120px;
+        justify-content: center;
+        padding: 0.7rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .modal-section-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    /* --- Info Panels (Skills, About, Contact, Blog, Admin) --- */
+    .info-panel-content {
+        max-width: 100%;
+        padding: 2.5rem 1.5rem;
+    }
+
+    .panel-header {
+        margin-bottom: 2rem;
+    }
+
+    .panel-header h2 {
+        font-size: 1.6rem;
+    }
+
+    /* --- Skills Canvas --- */
     .canvas-graph-container {
-        min-height: 380px;
+        min-height: 350px;
+    }
+
+    /* --- Blog Panel --- */
+    .info-panel-content.blog-panel-content {
+        max-width: 100%;
+        padding: 2.5rem 1.2rem;
+    }
+
+    .blog-reader-body {
+        padding: 2rem 1.2rem;
+    }
+
+    .blog-article-title {
+        font-size: 1.5rem;
+    }
+
+    /* --- Indicator Panel --- */
+    .project-indicator-panel {
+        gap: 0.6rem;
+        margin-top: 0.5rem;
+    }
+
+    .active-project-tagline {
+        font-size: 0.95rem;
+        min-width: 200px;
     }
 }
 
-/* Disable custom cursors on Touch/Mobile Screens to avoid ghost cursors */
+/* ================= RESPONSIVE: SMALL MOBILE (max-width: 480px) ================= */
+@media (max-width: 480px) {
+    /* --- Intro --- */
+    .typewriter-container {
+        font-size: 1rem;
+        min-height: 300px;
+    }
+
+    .explore-btn {
+        padding: 0.9rem 1.5rem;
+        font-size: 0.95rem;
+    }
+
+    /* --- Header --- */
+    .portfolio-header {
+        padding: 0.8rem 1rem;
+    }
+
+    .brand-logo {
+        width: 36px;
+        height: 36px;
+    }
+
+    .brand-logo svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .brand-name {
+        font-size: 0.95rem;
+    }
+
+    .brand-tag {
+        font-size: 0.72rem;
+    }
+
+    .brand {
+        gap: 0.7rem;
+    }
+
+    /* --- Content --- */
+    .portfolio-content {
+        padding: 0 0.8rem 1rem 0.8rem;
+    }
+
+    .section-title {
+        font-size: 1.7rem;
+    }
+
+    .section-desc {
+        font-size: 0.82rem;
+    }
+
+    .section-subtitle {
+        font-size: 0.65rem;
+    }
+
+    /* --- Cards --- */
+    .deck-outer-container {
+        height: 310px;
+    }
+
+    .deck-container {
+        width: 250px;
+        height: 280px;
+    }
+
+    .project-card {
+        width: 250px;
+        height: 280px;
+    }
+
+    .card-visual {
+        height: 115px;
+    }
+
+    .card-details {
+        padding: 1rem;
+    }
+
+    .card-title {
+        font-size: 1rem;
+    }
+
+    .card-category {
+        font-size: 0.68rem;
+    }
+
+    .card-intro-desc {
+        font-size: 0.78rem;
+    }
+
+    .card-stack {
+        font-size: 0.65rem;
+    }
+
+    /* --- Info Panels --- */
+    .info-panel-content {
+        padding: 2rem 1.2rem;
+    }
+
+    .panel-header h2 {
+        font-size: 1.4rem;
+    }
+
+    .canvas-graph-container {
+        min-height: 300px;
+    }
+
+    /* --- Modal --- */
+    .modal-content-wrapper {
+        width: 98%;
+        height: 92vh;
+        border-radius: 10px;
+    }
+
+    .modal-hero {
+        height: 160px;
+    }
+
+    .modal-body {
+        padding: 1.2rem 1rem;
+    }
+
+    .modal-title {
+        font-size: 1.4rem;
+    }
+
+    .modal-link-btn {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    /* --- Blog --- */
+    .blog-reader-body {
+        padding: 1.5rem 1rem;
+    }
+
+    .blog-article-title {
+        font-size: 1.3rem;
+    }
+
+    .blog-article-body {
+        font-size: 0.95rem;
+    }
+
+    /* --- Form rows --- */
+    .form-row {
+        flex-direction: column;
+        gap: 1.2rem;
+    }
+
+    /* --- Contact form --- */
+    .conversational-sentence {
+        font-size: 1.05rem;
+        line-height: 2;
+    }
+
+    .inline-input {
+        font-size: 1.05rem !important;
+        min-width: 120px;
+    }
+
+    .inline-textarea {
+        font-size: 1rem !important;
+    }
+
+    /* --- Devpost banner --- */
+    .devpost-stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ================= RESPONSIVE: VERY SMALL (max-width: 360px) ================= */
+@media (max-width: 360px) {
+    .typewriter-container {
+        font-size: 0.9rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .deck-container,
+    .project-card {
+        width: 220px;
+        height: 260px;
+    }
+
+    .deck-outer-container {
+        height: 290px;
+    }
+
+    .card-visual {
+        height: 100px;
+    }
+
+    .card-details {
+        padding: 0.8rem;
+    }
+
+    .modal-title {
+        font-size: 1.2rem;
+    }
+}
+
+/* ================= TOUCH DEVICE CURSOR FIX ================= */
 @media (pointer: coarse) {
     .custom-cursor,
     .custom-cursor-dot {
@@ -1371,8 +1743,57 @@ button, a {
     * {
         cursor: auto !important;
     }
-    button, a, .project-card, .nav-btn {
+    button, a, .project-card, .nav-btn, .nav-contact-btn, .hamburger-btn,
+    .social-link-card, .blog-card, .devpost-banner-card, .bullet {
         cursor: pointer !important;
+    }
+}
+
+/* ================= MOBILE LANDSCAPE ================= */
+@media (max-height: 500px) and (orientation: landscape) {
+    .intro-section {
+        padding: 1rem;
+    }
+
+    .typewriter-container {
+        font-size: 0.95rem;
+        min-height: 120px;
+    }
+
+    .intro-content {
+        gap: 1rem;
+    }
+
+    .intro-scroll-prompt {
+        display: none;
+    }
+
+    .deck-outer-container {
+        height: 250px;
+    }
+
+    .deck-container,
+    .project-card {
+        width: 220px;
+        height: 240px;
+    }
+
+    .card-visual {
+        height: 100px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .section-subtitle {
+        font-size: 0.6rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .section-desc {
+        display: none;
     }
 }
 
@@ -1857,13 +2278,6 @@ button, a {
     }
 }
 
-/* Small mobile heights/widths scaling */
-@media (max-width: 480px) {
-    .form-row {
-        flex-direction: column;
-        gap: 1.2rem;
-    }
-}
 
 /* ================= SOCIAL LINKS GRID ================= */
 .social-links-grid {
@@ -1978,15 +2392,6 @@ button, a {
     border: 1px solid var(--border-medium);
 }
 
-/* Nav wrapping adjust for smaller heights/widths to avoid nav buttons running off */
-@media (max-width: 1024px) {
-    .portfolio-nav {
-        flex-wrap: wrap;
-        justify-content: center;
-        max-width: 95%;
-        gap: 0.6rem;
-    }
-}
 
 /* ================= CONVERSATIONAL SENTENCE FORM ================= */
 .conversational-contact-form {

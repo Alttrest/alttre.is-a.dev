@@ -423,6 +423,7 @@ function renderDeck() {
 function updateDeckLayout() {
     const cards = document.querySelectorAll(".project-card");
     const bullets = document.querySelectorAll(".bullet");
+    const isMobile = window.innerWidth <= 768;
     
     cards.forEach((card, index) => {
         const diff = index - activeIndex;
@@ -434,13 +435,19 @@ function updateDeckLayout() {
             card.style.zIndex = "10";
             card.style.pointerEvents = "auto";
         } else if (diff === -1) {
-            card.style.transform = `translate3d(-110%, 0, -200px) scale(0.82) rotateY(32deg)`;
-            card.style.opacity = "0.55";
+            const tx = isMobile ? "-85%" : "-110%";
+            const sc = isMobile ? "0.78" : "0.82";
+            const rot = isMobile ? "25deg" : "32deg";
+            card.style.transform = `translate3d(${tx}, 0, -200px) scale(${sc}) rotateY(${rot})`;
+            card.style.opacity = isMobile ? "0.4" : "0.55";
             card.style.zIndex = "5";
             card.style.pointerEvents = "none";
         } else if (diff === 1) {
-            card.style.transform = `translate3d(110%, 0, -200px) scale(0.82) rotateY(-32deg)`;
-            card.style.opacity = "0.55";
+            const tx = isMobile ? "85%" : "110%";
+            const sc = isMobile ? "0.78" : "0.82";
+            const rot = isMobile ? "-25deg" : "-32deg";
+            card.style.transform = `translate3d(${tx}, 0, -200px) scale(${sc}) rotateY(${rot})`;
+            card.style.opacity = isMobile ? "0.4" : "0.55";
             card.style.zIndex = "5";
             card.style.pointerEvents = "none";
         } else if (diff < -1) {
@@ -557,6 +564,69 @@ window.addEventListener("touchend", (e) => {
         updateDeckLayout();
     }
 });
+
+
+// ================= HAMBURGER MENU TOGGLE ================= //
+const hamburgerBtn = document.getElementById("hamburgerBtn");
+const portfolioNav = document.getElementById("portfolioNav");
+
+if (hamburgerBtn && portfolioNav) {
+    hamburgerBtn.addEventListener("click", () => {
+        hamburgerBtn.classList.toggle("active");
+        portfolioNav.classList.toggle("mobile-open");
+    });
+
+    // Close mobile nav when any nav button is clicked
+    portfolioNav.querySelectorAll(".nav-btn, .nav-contact-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            if (window.innerWidth <= 768) {
+                hamburgerBtn.classList.remove("active");
+                portfolioNav.classList.remove("mobile-open");
+            }
+        });
+    });
+}
+
+// Close mobile nav when clicking outside
+document.addEventListener("click", (e) => {
+    if (window.innerWidth <= 768 && hamburgerBtn && portfolioNav) {
+        if (!hamburgerBtn.contains(e.target) && !portfolioNav.contains(e.target)) {
+            hamburgerBtn.classList.remove("active");
+            portfolioNav.classList.remove("mobile-open");
+        }
+    }
+});
+
+// ================= MOBILE-SPECIFIC TEXT SWAP ================= //
+function updateMobileTexts() {
+    const isMobile = window.matchMedia("(pointer: coarse)").matches || window.innerWidth <= 768;
+    
+    // Update scroll instruction text
+    const scrollInstruction = document.querySelector(".scroll-instruction span:last-child");
+    if (scrollInstruction) {
+        scrollInstruction.textContent = isMobile ? "Swipe Up/Down" : "Scroll or Drag";
+    }
+    
+    // Update section description
+    const sectionDesc = document.querySelector(".section-desc");
+    if (sectionDesc) {
+        if (isMobile) {
+            sectionDesc.innerHTML = 'From-scratch AI agents, hardware prototypes, and immersive web experiences. <strong>Swipe up or down</strong> to explore.';
+        } else {
+            sectionDesc.innerHTML = 'From-scratch AI agents, hardware prototypes, and immersive web experiences. <strong>Scroll your mouse wheel</strong> to explore.';
+        }
+    }
+    
+    // Update intro scroll prompt
+    const scrollText = document.querySelector(".scroll-text");
+    if (scrollText) {
+        scrollText.textContent = isMobile ? "Swipe Up to Enter" : "Scroll Down to Enter";
+    }
+}
+
+// Run on load and resize
+updateMobileTexts();
+window.addEventListener("resize", updateMobileTexts);
 
 
 // ================= MOUSE TILT PARALLAX EFFECT FOR ACTIVE CARD ================= //
