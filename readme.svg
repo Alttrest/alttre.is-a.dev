@@ -1,0 +1,27 @@
+<svg width="800" height="300" viewBox="0 0 800 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="300" rx="15" fill="#0D1117" stroke="#30363D" stroke-width="2"/>
+    
+    <!-- Header -->
+    <rect x="0" y="0" width="800" height="60" rx="15" fill="#161B22"/>
+    <text x="50" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#58A6FF">alttre.is-a.dev</text>
+    <line x1="0" y1="60" x2="800" y2="60" stroke="#30363D" stroke-width="2"/>
+    
+    <!-- Description -->
+    <text x="50" y="120" font-family="Arial, sans-serif" font-size="16" fill="#8B949E">My personal developer portfolio and digital workspace</text>\n<text x="50" y="145" font-family="Arial, sans-serif" font-size="16" fill="#8B949E">showcasing my projects in modern web development, 3D</text>\n<text x="50" y="170" font-family="Arial, sans-serif" font-size="16" fill="#8B949E">design, and software engineering. (alttre.is-a.dev)</text>\n
+    
+    <!-- Footer -->
+    <line x1="50" y1="230" x2="750" y2="230" stroke="#30363D" stroke-width="1"/>
+    
+    <!-- Language -->
+    <circle cx="60" cy="260" r="8" fill="#F1E05A"/>
+    <text x="80" y="265" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#C9D1D9">JavaScript</text>
+    
+    <!-- Stars -->
+    <text x="200" y="265" font-family="Arial, sans-serif" font-size="16" fill="#8B949E">⭐ Stars: 2</text>
+    
+    <!-- Forks -->
+    <text x="320" y="265" font-family="Arial, sans-serif" font-size="16" fill="#8B949E">🍴 Forks: 0</text>
+    
+    <!-- Developer -->
+    <text x="650" y="265" font-family="Arial, sans-serif" font-size="14" fill="#8B949E">by @Alttrest</text>
+</svg>
