@@ -10,7 +10,7 @@
 <br/>
 
   <!-- GitHub Repo Pin Card SVG -->
-  <img src="https://github-readme-stats.vercel.app/api/pin/?username=Alttrest&repo=alttre.is-a.dev&theme=radical&show_owner=true" alt="Repo Stats" />
+  <img src="https://github-readme-svg-ten.vercel.app/api?username=Alttrest&repo=alttre.is-a.dev&theme=dark" alt="Repo Stats" />
 
 </div>
 
