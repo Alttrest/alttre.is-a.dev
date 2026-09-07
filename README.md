@@ -1,4 +1,4 @@
-<div align="center">
+<p align="center">\n  <img src="https://raw.githubusercontent.com/Alttrest/alttre.is-a.dev/main/banner.jpeg" width="100%" alt="Project Banner" />\n</p>\n\n<div align="center">
   
 # ✨ alttre.is-a.dev ✨
 
