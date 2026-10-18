@@ -6,10 +6,13 @@
     <title>Alttre | Ali Turan — AI, Robotics & Web Developer</title>
     <meta name="description" content="Explore Alttre, Ali Turan's developer portfolio: AI agents, robotics, hardware prototypes, web apps and engineering notes, with links to the projects and source code.">
     <link rel="canonical" href="https://alttre.is-a.dev/">
+    <link rel="alternate" hreflang="en" href="https://alttre.is-a.dev/">
+    <link rel="alternate" hreflang="tr" href="https://alttre.is-a.dev/tr/">
+    <link rel="alternate" hreflang="x-default" href="https://alttre.is-a.dev/">
     <meta name="robots" content="index,follow,max-image-preview:large">
     <meta name="theme-color" content="#1e1b18">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Alttre — Ali Turan">
+    <meta property="og:site_name" content="Alttre">
     <meta property="og:title" content="Ali Turan (Alttre) | Developer Portfolio">
     <meta property="og:description" content="AI, robotics, hardware and web projects by Ali Turan (Alttre). Explore selected projects and work.">
     <meta property="og:url" content="https://alttre.is-a.dev/">
@@ -29,9 +32,8 @@
     {
       "@context": "https://schema.org",
       "@graph": [
-        {"@type": "WebSite", "@id": "https://alttre.is-a.dev/#website", "url": "https://alttre.is-a.dev/", "name": "Alttre — Ali Turan", "inLanguage": "en"},
-        {"@type": "Person", "@id": "https://alttre.is-a.dev/#person", "name": "Ali Turan", "alternateName": "Alttre", "url": "https://alttre.is-a.dev/", "image": "https://alttre.is-a.dev/assets/alttre_profile.png", "jobTitle": "Developer", "sameAs": ["https://github.com/Alttrest"]},
-        {"@type": "Organization", "@id": "https://alttre.is-a.dev/#organization", "name": "Alttre", "url": "https://alttre.is-a.dev/", "logo": {"@type": "ImageObject", "url": "https://alttre.is-a.dev/favicon.png", "width": 96, "height": 96}}
+        {"@type": "WebSite", "@id": "https://alttre.is-a.dev/#website", "url": "https://alttre.is-a.dev/", "name": "Alttre", "alternateName": "Alttre — Ali Turan", "inLanguage": ["en", "tr"], "creator": {"@id": "https://alttre.is-a.dev/#person"}},
+        {"@type": "Person", "@id": "https://alttre.is-a.dev/#person", "name": "Ali Turan", "alternateName": "Alttre", "url": "https://alttre.is-a.dev/", "image": "https://alttre.is-a.dev/assets/alttre_profile.png", "jobTitle": "Developer", "knowsAbout": ["AI agents", "robotics", "embedded systems", "web development"], "sameAs": ["https://github.com/Alttrest"]}
       ]
     }
     </script>
@@ -58,13 +60,14 @@
 
         <!-- ========== INTRO SECTION ========== -->
         <section id="introSection" class="intro-section active">
+            <a class="intro-language-link" href="/tr/" lang="tr" hreflang="tr">Türkçe</a>
             <div class="intro-content">
                 <div class="typewriter-container">
                     <span class="typewriter-prompt">></span>
                     <span id="typewriterText" class="typewriter-text"></span>
                     <span class="typewriter-cursor">|</span>
                 </div>
-                <p class="intro-summary">AI agents, robotics, hardware prototypes and web projects by Ali Turan. Explore selected work and engineering notes.</p>
+                <p class="intro-summary">Alttre is Ali Turan's developer portfolio: AI agents, robotics, hardware prototypes and web projects. Explore selected work and engineering notes.</p>
                 <div class="intro-action-container">
                     <button id="exploreBtn" class="explore-btn">Explore &rarr;</button>
                 </div>
@@ -105,6 +108,7 @@
                     <button class="nav-btn" id="navSetupBtn">About Me</button>
                     <button class="nav-btn" id="navBlogBtn">Blog</button>
                     <button class="nav-contact-btn" id="navContactBtn">Contact</button>
+                    <a class="nav-language-link" href="/tr/" lang="tr" hreflang="tr">Türkçe</a>
                 </nav>
             </header>
 
