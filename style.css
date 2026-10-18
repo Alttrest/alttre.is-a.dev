@@ -173,6 +173,17 @@ button, a {
     line-height: 1.6;
 }
 
+.intro-language-link {
+    position: absolute;
+    top: 2rem;
+    right: 3rem;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    text-decoration: underline;
+    text-underline-offset: 0.25rem;
+}
+
 .typewriter-prompt {
     color: var(--accent-red);
     margin-right: 1rem;
@@ -392,6 +403,20 @@ button, a {
     border-radius: 30px;
     border: 1px solid var(--border-medium);
     box-shadow: 0 4px 20px rgba(30, 27, 24, 0.05);
+}
+
+.nav-language-link {
+    padding: 0.55rem 0.9rem;
+    color: var(--accent-red);
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.nav-language-link:hover,
+.intro-language-link:hover {
+    color: var(--accent-red-hover);
 }
 
 .nav-btn {
@@ -1357,6 +1382,17 @@ button, a {
         padding: 0.65rem 1rem;
         font-size: 0.95rem;
         border-radius: 8px;
+    }
+
+    .nav-language-link {
+        width: 100%;
+        text-align: center;
+        padding: 0.65rem 1rem;
+    }
+
+    .intro-language-link {
+        top: 1.5rem;
+        right: 1.5rem;
     }
 
     /* --- Intro Section --- */
