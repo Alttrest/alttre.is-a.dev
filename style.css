@@ -165,6 +165,14 @@ button, a {
     position: relative;
 }
 
+.intro-summary {
+    max-width: 56ch;
+    margin-top: -1.5rem;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
 .typewriter-prompt {
     color: var(--accent-red);
     margin-right: 1rem;
