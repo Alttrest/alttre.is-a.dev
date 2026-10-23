@@ -136,7 +136,25 @@
             </div>
         </section>
 
+            <footer class="homework-note-footer">
+                <details class="homework-note">
+                    <summary>Homework Note</summary>
+                    <div class="homework-note-content"><p>My sister is 33 years old. She is married and very kind. She is a sweet and caring person. She always cares about the people around her and tries to help them when she can. She is friendly, thoughtful, and easy to talk to. Her warm personality makes people feel happy and comfortable. I feel lucky to have her in my life, and I love her very much.</p></div>
+                </details>
+            </footer>
+            <style>
+.homework-note-footer{position:fixed;right:2rem;bottom:1.2rem;z-index:250;font-family:Outfit,Arial,sans-serif}
+.homework-note summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:.55rem;padding:.68rem 1rem;border:1px solid #bdb3a5;border-radius:6px;background:#faf6ee;color:#1e1b18;font-size:.9rem;font-weight:700;box-shadow:0 5px 18px #1e1b1820}
+.homework-note summary::-webkit-details-marker{display:none}
+.homework-note summary:after{content:"+";color:#da291c;font-size:1.1rem}
+.homework-note[open] summary:after{content:"−"}
+.homework-note-content{position:absolute;right:0;bottom:calc(100% + .65rem);width:min(440px,calc(100vw - 2rem));max-height:42vh;overflow:auto;padding:1.15rem 1.25rem;border:1px solid #d9d1c6;border-radius:8px;background:#faf6ee;color:#514b45;box-shadow:0 12px 36px #1e1b1830;font-size:.98rem;line-height:1.65}
+.homework-note-content p{margin:0}
+@media(max-width:768px){.homework-note-footer{right:1rem;bottom:1rem}.homework-note-content{width:min(360px,calc(100vw - 2rem))}}
+            </style>
+
         <!-- ========== PROJECT DETAILS MODAL ========== -->
+
         <div id="projectDetailsModal" class="details-modal">
             <div class="modal-overlay" id="modalOverlay"></div>
             <div class="modal-content-wrapper">
