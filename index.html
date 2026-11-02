@@ -7,7 +7,6 @@
     <meta name="description" content="Explore Alttre, Ali Turan's developer portfolio: AI agents, robotics, hardware prototypes, web apps and engineering notes, with links to the projects and source code.">
     <link rel="canonical" href="https://alttre.is-a.dev/">
     <link rel="alternate" hreflang="en" href="https://alttre.is-a.dev/">
-    <link rel="alternate" hreflang="tr" href="https://alttre.is-a.dev/tr/">
     <link rel="alternate" hreflang="x-default" href="https://alttre.is-a.dev/">
     <meta name="robots" content="index,follow,max-image-preview:large">
     <meta name="theme-color" content="#1e1b18">
@@ -41,6 +40,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="competitions.css">
+    <script src="competitions.js" defer></script>
+    <link rel="stylesheet" href="intro-tunnel.css">
+    <script src="intro-tunnel.js" defer></script>
+    <link rel="stylesheet" href="lanyard-dist/lanyard.css">
+    <script src="lanyard-dist/lanyard.js" defer></script>
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png">
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -60,7 +65,7 @@
 
         <!-- ========== INTRO SECTION ========== -->
         <section id="introSection" class="intro-section active">
-            <a class="intro-language-link" href="/tr/" lang="tr" hreflang="tr">Türkçe</a>
+            <div class="intro-tunnel-bg" aria-hidden="true"><div class="intro-ring"></div><div class="intro-ring intro-ring-large"></div><div class="intro-tunnel-plane"></div><div class="intro-glitches"></div></div>
             <div class="intro-content">
                 <div class="typewriter-container">
                     <span class="typewriter-prompt">></span>
@@ -106,9 +111,8 @@
                     <button class="nav-btn active" id="navProjectsBtn">Projects</button>
                     <button class="nav-btn" id="navSkillsBtn">Skills</button>
                     <button class="nav-btn" id="navSetupBtn">About Me</button>
-                    <button class="nav-btn" id="navBlogBtn">Blog</button>
+                    <button class="nav-btn" id="navBlogBtn">Yarışmalar</button>
                     <button class="nav-contact-btn" id="navContactBtn">Contact</button>
-                    <a class="nav-language-link" href="/tr/" lang="tr" hreflang="tr">Türkçe</a>
                 </nav>
             </header>
 
@@ -117,7 +121,7 @@
                     <div class="section-title-area">
                         <h2 class="section-subtitle">PROJECTS & WORKS I CURATED</h2>
                         <h1 class="section-title">I Built This.</h1>
-                        <p class="section-desc">From-scratch AI agents, hardware prototypes, and immersive web experiences. <strong>Scroll your mouse wheel</strong> to explore.</p>
+                        <p class="section-desc">Projeleri sağa sola kaydır; yarışmalar için aşağı in.</p>
                     </div>
 
                     <div class="deck-outer-container">
@@ -127,31 +131,16 @@
                     <div class="project-indicator-panel">
                         <div class="scroll-instruction">
                             <span class="mouse-icon"><span class="mouse-wheel"></span></span>
-                            <span>Scroll or Drag</span>
+                            <span>← Kaydır → &nbsp; · &nbsp; Yarışmalar için aşağı ↓</span>
                         </div>
                         <div class="deck-bullets" id="deckBullets"></div>
                         <div class="active-project-tagline" id="projectTagline">Loading...</div>
                     </div>
                 </div>
             </div>
+            <section id="competitionsSection" class="competitions-section" aria-labelledby="competitionsTitle"><div class="competition-heading"><span>SAHADAN NOTLAR / 01—03</span><h2 id="competitionsTitle">Yarışmalar<span>.</span></h2><p>Fikirden robota, yarışma yolculuğum.</p></div><div id="lanyard-root"></div></section>
         </section>
 
-            <footer class="homework-note-footer">
-                <details class="homework-note">
-                    <summary>Homework Note</summary>
-                    <div class="homework-note-content"><p>My sister is 33 years old. She is married and very kind. She is a sweet and caring person. She always cares about the people around her and tries to help them when she can. She is friendly, thoughtful, and easy to talk to. Her warm personality makes people feel happy and comfortable. I feel lucky to have her in my life, and I love her very much.</p></div>
-                </details>
-            </footer>
-            <style>
-.homework-note-footer{position:fixed;right:2rem;bottom:1.2rem;z-index:250;font-family:Outfit,Arial,sans-serif}
-.homework-note summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:.55rem;padding:.68rem 1rem;border:1px solid #bdb3a5;border-radius:6px;background:#faf6ee;color:#1e1b18;font-size:.9rem;font-weight:700;box-shadow:0 5px 18px #1e1b1820}
-.homework-note summary::-webkit-details-marker{display:none}
-.homework-note summary:after{content:"+";color:#da291c;font-size:1.1rem}
-.homework-note[open] summary:after{content:"−"}
-.homework-note-content{position:absolute;right:0;bottom:calc(100% + .65rem);width:min(440px,calc(100vw - 2rem));max-height:42vh;overflow:auto;padding:1.15rem 1.25rem;border:1px solid #d9d1c6;border-radius:8px;background:#faf6ee;color:#514b45;box-shadow:0 12px 36px #1e1b1830;font-size:.98rem;line-height:1.65}
-.homework-note-content p{margin:0}
-@media(max-width:768px){.homework-note-footer{right:1rem;bottom:1rem}.homework-note-content{width:min(360px,calc(100vw - 2rem))}}
-            </style>
 
         <!-- ========== PROJECT DETAILS MODAL ========== -->
 
@@ -205,22 +194,6 @@
                         </p>
                     </div>
                     
-                    <div class="setup-box">
-                        <h3>Work Environment & Setup</h3>
-                        <div class="setup-spec"><strong>Processor / CPU:</strong> AMD Ryzen 7 7600</div>
-                        <div class="setup-spec"><strong>Memory / RAM:</strong> 32 GB DDR5 RAM</div>
-                        <div class="setup-spec"><strong>Graphics Card / GPU:</strong> NVIDIA RTX 5060 8GB</div>
-                        <div class="setup-spec"><strong>Operating System / OS:</strong> Custom Linux (Hyprland WM)</div>
-                        <p class="setup-description">My high-performance development rig optimized for local AI agent testing and compilation. Configured with a clean, dynamic Hyprland tiled window manager workspace.</p>
-                    </div>
-                    <div class="setup-box">
-                        <h3>Mobile Lab Setup</h3>
-                        <div class="setup-spec"><strong>Processor / CPU:</strong> Intel Core i5-8300H</div>
-                        <div class="setup-spec"><strong>Memory / RAM:</strong> 16 GB DDR4 RAM</div>
-                        <div class="setup-spec"><strong>Graphics Card / GPU:</strong> NVIDIA GTX 1050 Ti Mobile</div>
-                        <div class="setup-spec"><strong>Operating System / OS:</strong> Pop!_OS 24.04 LTS</div>
-                        <p class="setup-description">My portable workstation companion used for compiling hardware firmware, field testing robotics configurations, and live debugging.</p>
-                    </div>
                 </div>
                 <div class="setup-details-extra">
                     <h3>Developer Philosophy</h3>
@@ -407,7 +380,8 @@
                             
                             <div class="conversational-footer">
                                 <button type="submit" class="admin-submit-btn" id="contactSubmitBtn">Send Message &rarr;</button>
-                                <div id="contactFormStatus" class="contact-status-message" style="margin-top: 15px; font-weight: 500; font-size: 0.9rem;"></div>
+                                <div id="contactFormStatus" class="contact-status-message" role="status" aria-live="polite" style="margin-top: 15px; font-weight: 500; font-size: 0.9rem;"></div>
+                                <p class="contact-email-fallback">Prefer email? <a href="mailto:ali-turan-@outlook.com">ali-turan-@outlook.com</a></p>
                             </div>
                         </form>
                     </div>
@@ -417,7 +391,7 @@
                         <h3>Social Accounts</h3>
                         <p class="setup-description" style="margin-top: 0; margin-bottom: 1.2rem;">Feel free to follow my work or contact me directly through these channels.</p>
                         <div class="social-links-grid">
-                            <div class="social-link-card devpost" id="socialDevpost" onclick="openBlogWithFilter('hackathons')" style="cursor:pointer;">
+                            <div class="social-link-card devpost" id="socialDevpost" onclick="closeContactPanel(); document.getElementById('competitionsSection').scrollIntoView({behavior:'smooth'});" style="cursor:pointer;">
                                 <div class="social-link-icon devpost-svg-icon">
                                     <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
                                         <path d="M6.002 1.61L0 12.004l6.002 10.388h7.062l5.882-10.388L13.064 1.61H6.002zm2.936 3.655h2.805c3.08 0 5.485 2.146 5.485 6.739 0 4.593-2.405 6.739-5.485 6.739H8.938V5.265zm2.805 10.518c1.69 0 2.664-1.287 2.664-3.779 0-2.492-.974-3.779-2.664-3.779h-0.785v7.558h0.785z"/>
@@ -425,7 +399,7 @@
                                 </div>
                                 <div class="social-link-details">
                                     <span class="social-link-name">Devpost & Hackathons</span>
-                                    <span class="social-link-handle">View hackathon dev logs</span>
+                                    <span class="social-link-handle">Yarışma kartlarını gör</span>
                                 </div>
                             </div>
                             <a href="https://github.com/Alttrest" target="_blank" class="social-link-card github" id="socialGithub">
@@ -468,9 +442,24 @@
             <div class="info-panel-content blog-panel-content">
                 <button class="info-panel-close-btn" id="blogCloseBtn">&times;</button>
                 <div class="panel-header">
-                    <div class="badge-tag">ENGINEERING LOGS</div>
-                    <h2>DEV LOGS & BLOG</h2>
-                    <p>Writings on autonomous AI agents, robotics, Linux dotfiles, hackathons, and systems built from scratch.</p>
+                    <div class="badge-tag">SAHADAN NOTLAR</div>
+                    <h2>YARIŞMALAR</h2>
+                    <p>Fikirden robota, yarışma yolculuğum.</p>
+                </div>
+                <div class="competition-stage" aria-label="Katıldığım yarışmalar">
+                    <div class="tunnel-scene" aria-hidden="true"><div class="tunnel-ring"></div><div class="tunnel-ring tunnel-ring-outer"></div><div class="tunnel-plane"><span class="tunnel-card" style="--x:-32%;--y:-18%;--r:-8deg">2025<br>ALKÜ</span><span class="tunnel-card" style="--x:29%;--y:12%;--r:9deg">2025<br>FIBONACCI</span><span class="tunnel-card" style="--x:12%;--y:-28%;--r:-5deg">2026<br>MEB</span></div></div>
+                    <pre class="competition-ascii" aria-hidden="true">       .-=========-.
+      /  .-^^^-.  \\
+     |  /  ◉ ◉  \\  |
+     | |   ___   | |
+      \\  \\_____/  /
+       '----------'</pre>
+                    <div class="competition-rail">
+                        <button class="competition-card" type="button" aria-pressed="false"><span class="card-strap"></span><span class="card-body"><span class="card-top">HACKATHON / 01</span><span class="card-icon">✳</span><strong>ALKÜ<br>Hackathon</strong><span class="card-year">2025</span><span class="card-hint">KARTI ÇEVİR ↗</span><span class="card-back">2025<br><b>ALKÜ Hackathon</b><small>YARIŞMA KARTI</small></span></span></button>
+                        <button class="competition-card" type="button" aria-pressed="false"><span class="card-strap"></span><span class="card-body"><span class="card-top">ROBOTİK / 02</span><span class="card-icon">✦</span><strong>Fibonacci<br>Robot Olimpiyatları</strong><span class="card-year">2025</span><span class="card-hint">KARTI ÇEVİR ↗</span><span class="card-back">2025<br><b>Fibonacci Robot Olimpiyatları</b><small>YARIŞMA KARTI</small></span></span></button>
+                        <button class="competition-card" type="button" aria-pressed="false"><span class="card-strap"></span><span class="card-body"><span class="card-top">ROBOTİK / 03</span><span class="card-icon">✺</span><strong>MEB<br>Robot</strong><span class="card-year">2026</span><span class="card-hint">KARTI ÇEVİR ↗</span><span class="card-back">2026<br><b>MEB Robot</b><small>YARIŞMA KARTI</small></span></span></button>
+                    </div>
+                    <p class="competition-instruction">Kartlara dokun veya sürükle.</p>
                 </div>
                 
                 <!-- Search & Filters -->

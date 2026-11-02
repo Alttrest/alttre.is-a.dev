@@ -1,0 +1,5 @@
+@import 'tailwindcss/theme.css';
+@import 'tailwindcss/utilities.css';
+@source './TeamLanyardRail.tsx';
+@theme { --color-background:#eee8df; --color-foreground:#34271f; --color-card:#faf6ee; --color-card-foreground:#34271f; --color-muted:#e8ddd0; --color-muted-foreground:#8e7766; --color-border:#d9c9b8; --color-ring:#cf682e; --color-chart-1:#b4472b; --color-chart-2:#d47a3b; --color-chart-3:#8d5039; --color-chart-4:#bc6241; --color-chart-5:#ae774d; }
+#lanyard-root [data-slot="team-lanyard-rail"]{font-family:Outfit,Arial,sans-serif} #lanyard-root button{border:0;font:inherit} #lanyard-root img{max-width:100%;display:block}

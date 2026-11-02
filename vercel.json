@@ -1,6 +1,7 @@
 {
   "version": 2,
   "cleanUrls": false,
+  "redirects": [ { "source": "/tr/:path*", "destination": "/", "permanent": false } ],
   "headers": [
     {
       "source": "/(style.css|app.js)",

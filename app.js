@@ -319,7 +319,7 @@ function triggerTransition() {
 // Start typewriter on load or restore transitioned state
 function initPortfolio() {
     updateAdminNavButton();
-    const transitioned = localStorage.getItem("portfolio_transitioned");
+    const transitioned = null;
     if (transitioned === "true") {
         // Skip typewriter animation
         introSection.style.transition = "none";
@@ -339,7 +339,9 @@ function initPortfolio() {
         // Fetch new projects in background
         fetchGithubProjects();
     } else {
-        setTimeout(typeNextChar, 1000);
+        currentLineIndex = introLines.length;
+        introActionContainer.classList.add("visible");
+        introScrollPrompt.classList.add("visible");
     }
 }
 
@@ -496,6 +498,7 @@ function handleWheelEvent(e) {
     if (document.getElementById("adminPanel") && document.getElementById("adminPanel").classList.contains("active")) return;
     if (document.getElementById("contactPanel") && document.getElementById("contactPanel").classList.contains("active")) return;
     
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
     e.preventDefault();
     
     if (isScrollThrottled) return;
@@ -503,13 +506,13 @@ function handleWheelEvent(e) {
     isScrollThrottled = true;
     setTimeout(() => { isScrollThrottled = false; }, 850);
     
-    if (e.deltaY > 0) {
+    if (e.deltaX > 0) {
         if (activeIndex < projects.length - 1) {
             activeIndex++;
         } else {
             activeIndex = 0;
         }
-    } else if (e.deltaY < 0) {
+    } else if (e.deltaX < 0) {
         if (activeIndex > 0) {
             activeIndex--;
         } else {
@@ -522,8 +525,10 @@ function handleWheelEvent(e) {
 window.addEventListener("wheel", handleWheelEvent, { passive: false });
 
 // Mobile Swipe (Touch) support for intro and carousel
+let startTouchX = 0;
 window.addEventListener("touchstart", (e) => {
     startTouchY = e.touches[0].clientY;
+    startTouchX = e.touches[0].clientX;
 });
 
 window.addEventListener("touchend", (e) => {
@@ -545,7 +550,8 @@ window.addEventListener("touchend", (e) => {
     if (document.getElementById("contactPanel") && document.getElementById("contactPanel").classList.contains("active")) return;
     
     const endTouchY = e.changedTouches[0].clientY;
-    const diffY = startTouchY - endTouchY;
+    const diffY = startTouchX - e.changedTouches[0].clientX;
+    if (!e.target.closest('.deck-outer-container') || Math.abs(diffY) <= Math.abs(startTouchY - endTouchY)) return;
     
     if (Math.abs(diffY) > 50) {
         if (diffY > 0) {
@@ -602,9 +608,9 @@ function updateMobileTexts() {
     const isMobile = window.matchMedia("(pointer: coarse)").matches || window.innerWidth <= 768;
     
     // Update scroll instruction text
-    const scrollInstruction = document.querySelector(".scroll-instruction span:last-child");
+    const scrollInstruction = document.querySelector(".scroll-instruction > span:last-child");
     if (scrollInstruction) {
-        scrollInstruction.textContent = isMobile ? "Swipe Up/Down" : "Scroll or Drag";
+        scrollInstruction.textContent = "← Projeleri kaydır → · Yarışmalar için aşağı ↓";
     }
     
     // Update section description
@@ -613,7 +619,7 @@ function updateMobileTexts() {
         if (isMobile) {
             sectionDesc.innerHTML = 'From-scratch AI agents, hardware prototypes, and immersive web experiences. <strong>Swipe up or down</strong> to explore.';
         } else {
-            sectionDesc.innerHTML = 'From-scratch AI agents, hardware prototypes, and immersive web experiences. <strong>Scroll your mouse wheel</strong> to explore.';
+            sectionDesc.textContent = 'Projeleri sağa sola kaydır; yarışmalar için aşağı in.';
         }
     }
     
@@ -941,7 +947,7 @@ if (navBlogBtn) {
         closeBlogPost();
         stopSkillsGraph();
         
-        if (blogPanel) blogPanel.classList.add("active");
+        document.getElementById("competitionsSection")?.scrollIntoView({ behavior: "smooth" });
         setActiveNav(navBlogBtn);
         renderBlogPosts();
     });
@@ -1910,46 +1916,39 @@ const contactForm = document.getElementById("contactForm");
 const contactFormStatus = document.getElementById("contactFormStatus");
 
 if (contactForm && contactFormStatus) {
-    contactForm.addEventListener("submit", function(e) {
+    contactForm.addEventListener("submit", async function(e) {
         e.preventDefault();
-        
+        const submit = document.getElementById("contactSubmitBtn");
+        const values = Object.fromEntries(new FormData(contactForm));
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 15000);
+        contactFormStatus.style.display = "block";
         contactFormStatus.className = "contact-status-message sending";
         contactFormStatus.textContent = "Sending...";
-        
-        const formData = new FormData(contactForm);
-        const object = Object.fromEntries(formData);
-        const json = JSON.stringify(object);
-        
-        fetch("https://api.web3forms.com/submit", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: json
-        })
-        .then(async (response) => {
-            let res = await response.json();
-            if (response.status == 200) {
-                contactFormStatus.className = "contact-status-message success";
-                contactFormStatus.textContent = "Message sent successfully!";
-                contactForm.reset();
-            } else {
-                console.log(response);
-                contactFormStatus.className = "contact-status-message error";
-                contactFormStatus.textContent = res.message || "An error occurred!";
-            }
-        })
-        .catch(error => {
-            console.log(error);
+        submit.disabled = true;
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                body: JSON.stringify(values), signal: controller.signal
+            });
+            const result = await response.json();
+            if (!response.ok || !result.success) throw new Error("Submission failed");
+            contactFormStatus.className = "contact-status-message success";
+            contactFormStatus.textContent = "Message sent successfully!";
+            contactForm.reset();
+        } catch (error) {
             contactFormStatus.className = "contact-status-message error";
-            contactFormStatus.textContent = "Network error! Please try again.";
-        })
-        .then(() => {
-            setTimeout(() => {
-                contactFormStatus.style.display = "none";
-            }, 6000);
-        });
+            contactFormStatus.textContent = "Could not send your message. ";
+            const fallback = document.createElement("a");
+            const subject = encodeURIComponent("Portfolio contact from " + values.name);
+            const body = encodeURIComponent(`Name: ${values.name}\nEmail: ${values.email}\n\n${values.message}`);
+            fallback.href = `mailto:ali-turan-@outlook.com?subject=${subject}&body=${body}`;
+            fallback.textContent = "Open it in your email app instead";
+            contactFormStatus.append(fallback);
+        } finally {
+            clearTimeout(timeout);
+            submit.disabled = false;
+        }
     });
 }
 
