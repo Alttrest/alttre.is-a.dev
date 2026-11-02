@@ -6,3 +6,7 @@
 @media(max-width:700px){.intro-section{padding:18px;perspective:900px}.intro-content{gap:14px}.intro-line{font-size:14px;line-height:1.25}.intro-line.is-current{font-size:clamp(21px,6vw,31px)}.intro-summary{font-size:12px;max-width:32ch}.intro-tunnel-card{border-radius:12px}.intro-language-link{top:1rem;right:1rem}.intro-bg-badge{bottom:.8rem;right:1rem}.intro-scroll-prompt{bottom:1rem;font-size:10px}.intro-glitches{opacity:.75}}
 @media(prefers-reduced-motion:reduce){.intro-content,.glitch-square{animation:none}.intro-line{transition:none}}
 .intro-content:before{content:'';position:absolute;z-index:-1;inset:-18% -12%;background:radial-gradient(ellipse,#f9f6f0ed 0%,#f9f6f0d9 38%,transparent 72%);pointer-events:none}.intro-line{opacity:.7;color:#795b4c}.intro-line.is-current{opacity:1;color:#b14e2a}
+/* Keep the off-screen slide transition from widening the mobile layout viewport. */
+html, body{width:100%;max-width:100%;overflow-x:clip}
+.app-container{overflow:clip}
+@media(max-width:700px){.intro-content{min-width:0;max-width:100%}.typewriter-text{width:100%}.intro-line{max-width:100%;overflow-wrap:anywhere}.portfolio-section.active{overflow-x:hidden}}
