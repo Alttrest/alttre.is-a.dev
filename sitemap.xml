@@ -2,8 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://alttre.is-a.dev/</loc>
-    <lastmod>2026-10-18</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://alttre.is-a.dev/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://alttre.is-a.dev/" />
+  </url>
+  <url>
+    <loc>https://alttre.is-a.dev/about/</loc>
+    <lastmod>2026-11-02</lastmod>
   </url>
 </urlset>
