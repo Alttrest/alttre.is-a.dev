@@ -366,14 +366,10 @@
                 </div>
                 
                 <div class="setup-container">
-                    <!-- Web3Forms AJAX Form -->
+                    <!-- Direct Email Contact Form -->
                     <div class="setup-box">
                         <h3>Send a Message</h3>
-                        <form id="contactForm" class="conversational-contact-form">
-                            <!-- Web3Forms Access Key -->
-                            <input type="hidden" name="access_key" value="c9211ea9-3542-461e-9d15-ecbc3a9f5a33">
-                            <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
-                            
+                        <form id="contactForm" class="conversational-contact-form" action="mailto:ali-turan-@outlook.com" method="get">
                             <p class="conversational-sentence">
                                 Hello, my name is <input type="text" name="name" id="contactName" required placeholder="your name" class="inline-input">. 
                                 You can reach me at <input type="email" name="email" id="contactEmail" required placeholder="your email" class="inline-input">. 
@@ -383,7 +379,7 @@
                             <div class="conversational-footer">
                                 <button type="submit" class="admin-submit-btn" id="contactSubmitBtn">Send Message &rarr;</button>
                                 <div id="contactFormStatus" class="contact-status-message" role="status" aria-live="polite" style="margin-top: 15px; font-weight: 500; font-size: 0.9rem;"></div>
-                                <p class="contact-email-fallback">Prefer email? <a href="mailto:ali-turan-@outlook.com">ali-turan-@outlook.com</a></p>
+                                <p class="contact-email-fallback">Direct email: <a href="mailto:ali-turan-@outlook.com">ali-turan-@outlook.com</a></p>
                             </div>
                         </form>
                     </div>

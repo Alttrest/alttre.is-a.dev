@@ -1911,43 +1911,29 @@ if (adminRevokeBtn) {
     });
 }
 
-// ================= CONTACT FORM SUBMISSION (WEB3FORMS AJAX) ================= //
+// ================= CONTACT FORM SUBMISSION (DIRECT MAILTO) ================= //
+const CONTACT_EMAIL = "ali-turan-@outlook.com";
 const contactForm = document.getElementById("contactForm");
 const contactFormStatus = document.getElementById("contactFormStatus");
 
-if (contactForm && contactFormStatus) {
-    contactForm.addEventListener("submit", async function(e) {
+if (contactForm) {
+    contactForm.addEventListener("submit", function(e) {
         e.preventDefault();
-        const submit = document.getElementById("contactSubmitBtn");
         const values = Object.fromEntries(new FormData(contactForm));
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 15000);
-        contactFormStatus.style.display = "block";
-        contactFormStatus.className = "contact-status-message sending";
-        contactFormStatus.textContent = "Sending...";
-        submit.disabled = true;
-        try {
-            const response = await fetch("https://api.web3forms.com/submit", {
-                method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" },
-                body: JSON.stringify(values), signal: controller.signal
-            });
-            const result = await response.json();
-            if (!response.ok || !result.success) throw new Error("Submission failed");
+        const name = (values.name || "").trim();
+        const email = (values.email || "").trim();
+        const message = (values.message || "").trim();
+
+        const subject = encodeURIComponent(`Portfolio contact from ${name}`);
+        const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
+        const mailtoUrl = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+
+        window.location.href = mailtoUrl;
+
+        if (contactFormStatus) {
+            contactFormStatus.style.display = "block";
             contactFormStatus.className = "contact-status-message success";
-            contactFormStatus.textContent = "Message sent successfully!";
-            contactForm.reset();
-        } catch (error) {
-            contactFormStatus.className = "contact-status-message error";
-            contactFormStatus.textContent = "Could not send your message. ";
-            const fallback = document.createElement("a");
-            const subject = encodeURIComponent("Portfolio contact from " + values.name);
-            const body = encodeURIComponent(`Name: ${values.name}\nEmail: ${values.email}\n\n${values.message}`);
-            fallback.href = `mailto:ali-turan-@outlook.com?subject=${subject}&body=${body}`;
-            fallback.textContent = "Open it in your email app instead";
-            contactFormStatus.append(fallback);
-        } finally {
-            clearTimeout(timeout);
-            submit.disabled = false;
+            contactFormStatus.textContent = `Opening your email client to send to ${CONTACT_EMAIL}...`;
         }
     });
 }
