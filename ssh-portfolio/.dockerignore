@@ -1,0 +1,6 @@
+target/
+host_key
+host_key.pub
+*.pem
+.env
+.git/
